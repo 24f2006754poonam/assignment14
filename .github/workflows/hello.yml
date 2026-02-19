@@ -1,0 +1,16 @@
+name: My First Action  # Overall workflow name
+
+on: [push]  # Triggers on any code push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Free GitHub runner (virtual machine)
+    steps:
+      - name: Checkout code  # Step 1: Grab your repo files
+        uses: actions/checkout@v4
+        
+      - name: 24f2006754@ds.study.iitm.ac.in  
+        run: echo "Hello from my custom step!"  # Simple command to prove it runs
+        
+      - name: List files  # Bonus step: Show repo contents
+        run: ls -la
