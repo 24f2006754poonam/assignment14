@@ -2,10 +2,12 @@ name: Daily Update
 
 on:
   schedule:
-    # Run once per day at 15:25 UTC
     - cron: "25 15 * * *"
+  workflow_dispatch:
 
-  workflow_dispatch:  # manual runs still work
+# Allow GitHub Actions to push back to the repo
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -17,7 +19,6 @@ jobs:
 
       - name: Update daily-status.md (24f2006754@ds.study.iitm.ac.in)
         run: |
-          mkdir -p logs
           echo "---" >> daily-status.md
           echo "Update on $(date -u)" >> daily-status.md
           echo "Triggered by 24f2006754@ds.study.iitm.ac.in" >> daily-status.md
@@ -28,5 +29,5 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add daily-status.md
-          git commit -m "Daily update - $(date -u)" || exit 0
+          git commit -m "Daily update - $(date -u)" || echo "Nothing to commit"
           git push
