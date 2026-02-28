@@ -2,11 +2,10 @@ name: Daily Update
 
 on:
   schedule:
-    # Example: runs once per day at 15:25 UTC (3:25 PM UTC)
+    # Run once per day at 15:25 UTC
     - cron: "25 15 * * *"
 
-  # Allow manual triggering too (nice for testing)
-  workflow_dispatch:
+  workflow_dispatch:  # manual runs still work
 
 jobs:
   update:
@@ -16,8 +15,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate daily update (24f2006754@ds.study.iitm.ac.in)
+      - name: Update daily-status.md (24f2006754@ds.study.iitm.ac.in)
         run: |
+          mkdir -p logs
           echo "---" >> daily-status.md
           echo "Update on $(date -u)" >> daily-status.md
           echo "Triggered by 24f2006754@ds.study.iitm.ac.in" >> daily-status.md
@@ -28,5 +28,5 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add daily-status.md
-          git commit -m "Daily update - $(date -u)"
+          git commit -m "Daily update - $(date -u)" || exit 0
           git push
